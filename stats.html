@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#5a5a5a">
+
+    <title>Korfbal Stats Live</title>
+</head>
+
+<body class="stats-body">
+    <div class="stats-container">
+        <a href="index.html" class="back-link">&larr; Terug naar match</a>
+
+        <p id="matchMeta" class="match-meta"></p>
+
+        <div class="stats-scoreboard">
+            <div class="stats-score-team">
+                <h3>Neerlandia</h3>
+                <p id="statsHomeScore" class="stats-score">0</p>
+            </div>
+            <div class="stats-score-divider">-</div>
+            <div class="stats-score-team">
+                <h3 id="statsOpponentName">Uitploeg</h3>
+                <p id="statsAwayScore" class="stats-score">0</p>
+            </div>
+        </div>
+
+        <h2>Hoofdstatistieken</h2>
+        <div id="mainStatsList" class="stats-player-list"></div>
+
+        <h2>Overige acties</h2>
+        <table class="stats-table" id="otherActionsTable">
+            <thead>
+                <tr>
+                    <th data-sort="player">Speler</th>
+                    <th data-sort="vrijworp">Vrijworp</th>
+                    <th data-sort="penalty">Penalty</th>
+                    <th data-sort="doorloper">Doorloper</th>
+                    <th data-sort="assist">Assist</th>
+                    <th data-sort="steal">Steal</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="stats-actions">
+            <button id="downloadPdfButton" class="reset-button pdf-button">Download PDF</button>
+            <button id="resetMatchButton" class="reset-button">Nieuwe wedstrijd</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="stats.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('service-worker.js').catch(function (err) {
+                    console.warn('Service worker registration failed:', err);
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

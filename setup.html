@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#5a5a5a">
+
+    <title>Korfbal Stats Live</title>
+</head>
+
+<body class="setup-body">
+    <div class="setup-container">
+        <h1>Nieuwe wedstrijd</h1>
+
+        <label for="opponentInput" class="setup-label">Tegenstander</label>
+        <input type="text" id="opponentInput" class="setup-input" placeholder="Naam tegenstander">
+
+        <div class="roster-controls">
+            <label for="rosterSelect" class="setup-label">Team</label>
+            <select id="rosterSelect" class="setup-input"></select>
+            <button id="deleteRosterButton" class="reset-button pdf-button" type="button">Verwijder team</button>
+        </div>
+
+        <div class="roster-import">
+            <label for="rosterFileInput" class="setup-label">Nieuw team importeren (Excel of CSV met kolommen "Nummer" en "Naam")</label>
+            <input type="file" id="rosterFileInput" accept=".xlsx,.xls,.csv">
+        </div>
+
+        <p class="setup-hint">Sleep spelers naar Aanval en Verdediging (4 + 4) en eventueel de Bank. Wat in "Spelers" blijft staan, speelt niet mee.</p>
+
+        <div class="setup-grid">
+            <div class="setup-zone" id="attackZone">
+                <h3>Aanval <span class="zone-count" id="attackCount">0/4</span></h3>
+                <div class="zone-drop" data-zone="attack"></div>
+            </div>
+            <div class="setup-zone" id="defenceZone">
+                <h3>Verdediging <span class="zone-count" id="defenceCount">0/4</span></h3>
+                <div class="zone-drop" data-zone="defence"></div>
+            </div>
+            <div class="setup-zone" id="benchZone">
+                <h3>Bank <span class="zone-count" id="benchCount">0/6</span></h3>
+                <div class="zone-drop" data-zone="bench"></div>
+            </div>
+            <div class="setup-zone" id="poolZone">
+                <h3>Spelers</h3>
+                <div class="zone-drop" data-zone="pool"></div>
+            </div>
+        </div>
+
+        <button id="startMatchButton" class="reset-button">Start wedstrijd</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="setup.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('service-worker.js').catch(function (err) {
+                    console.warn('Service worker registration failed:', err);
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

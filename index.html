@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#5a5a5a">
+
+    <title>Korfbal Stats Live</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="players-container">
+            <h2>Aanval:</h2>
+            <ul id="attackList" class="player-list"></ul>
+
+            <h2>Verdediging:</h2>
+            <ul id="defenceList" class="player-list"></ul>
+
+            <a href="stats.html" class="stats-link">Stats</a>
+            <div class="scorebord">
+                <div class="scorebord-home">
+                    <h3>Neerlandia -</h3>
+                    <p class="scorebord-score-home">0</p>
+                    <div class="scorebord-adjust">
+                        <button class="scorebord-button" data-team="home" data-delta="1">+</button>
+                        <button class="scorebord-button" data-team="home" data-delta="-1">-</button>
+                    </div>
+                </div>
+                <div class="scorebord-away">
+                    <h3 id="opponentNameLabel">uitploeg</h3>
+                    <p class="scorebord-score-away">0</p>
+                    <div class="scorebord-adjust">
+                        <button class="scorebord-button" data-team="away" data-delta="1">+</button>
+                        <button class="scorebord-button" data-team="away" data-delta="-1">-</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="switch-container">
+                <span class="no-goal-label">No Goal</span>
+                <label class="switch">
+                    <input type="checkbox" id="goalCheckbox">
+                    <span class="slider"></span>
+                </label>
+                <span class="goal-label">Goal</span>
+            </div>
+
+            <div id="canvasContainer" class="canvas-wrapper">
+                <img id="fieldImage" src="KorfbalVeldSmall.png" alt="Korfbal veld" class="field-image">
+                <canvas id="shotCanvas" class="shot-canvas" width="630" height="548"></canvas>
+            </div>
+
+            <div class="buttons-container">
+                <button class="action-button">Vrijworp</button>
+                <button class="action-button">Penalty</button>
+                <button class="action-button">Doorloper</button>
+                <button class="action-button">Rebound</button>
+                <button class="action-button">Assist</button>
+                <button class="action-button">Steal</button>
+                <button class="action-button">Tegengoal</button>
+                <button id="zeroChanceButton" class="action-button zero-chance-button">0 Kans</button>
+            </div>
+            <button id="undoButton" class="undo-button">Undo</button>
+        </div>
+
+        <div class="dashboard">
+            <div class="bench-section">
+                <h2>Bank:</h2>
+                <p class="bench-hint">Tik een bankspeler aan, tik daarna op wie hij/zij vervangt.</p>
+                <ul id="benchList" class="bench-list"></ul>
+                <div id="subLogBadge" class="sub-log-badge" title="Nog geen wissels">Wissels: 0/8</div>
+            </div>
+
+            <div class="timer-section">
+                <h2>Klok</h2>
+                <div class="timer-controls">
+                    <button id="startButton" class="clock-button clock-button-start" aria-label="Start">&#9654;</button>
+                    <button id="pauseButton" class="clock-button clock-button-pause" aria-label="Pauze">&#9208;</button>
+                    <button id="resetClockButton" class="clock-button clock-button-reset" aria-label="Reset naar 25:00">&#8634;</button>
+                    <div id="timerContainer" class="timer-container">
+                        <div id="timer" class="timer">00:00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="kans-section">
+                <div class="kans-buttons-row">
+                    <button id="kansButton" class="kans-button">Kans</button>
+                    <button id="opponentZeroChanceButton" class="kans-button kans-button-zero">0 Kans</button>
+                </div>
+                <div id="opponentChanceTotal" class="opponent-chance-total">Kansen tegenstander: 0</div>
+                <a href="verloop.html" class="verloop-link">Verloop bekijken &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Set the initial state of the goalCheckbox to unchecked
+        document.getElementById("goalCheckbox").checked = false;
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('service-worker.js').catch(function (err) {
+                    console.warn('Service worker registration failed:', err);
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

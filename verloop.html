@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#5a5a5a">
+
+    <title>Korfbal Stats Live</title>
+</head>
+
+<body class="verloop-body">
+    <div class="verloop-container">
+        <a href="index.html" class="back-link">&larr; Terug naar match</a>
+        <h2>Verloop</h2>
+        <p class="verloop-legend"><span class="legend-ons">Ons team</span> vs <span class="legend-tegenstander">Tegenstander</span> &middot; <span class="legend-goal">gele rand</span> = aanval eindigde in een doelpunt</p>
+
+        <div class="verloop-top">
+            <div class="pie-card">
+                <h3>0 kansen</h3>
+                <div class="pie-card-canvas-wrap"><canvas id="pieChart0"></canvas></div>
+            </div>
+            <div class="pie-card">
+                <h3>1 kans</h3>
+                <div class="pie-card-canvas-wrap"><canvas id="pieChart1"></canvas></div>
+            </div>
+            <div class="pie-card">
+                <h3>2 kansen</h3>
+                <div class="pie-card-canvas-wrap"><canvas id="pieChart2"></canvas></div>
+            </div>
+            <div class="pie-card">
+                <h3>&gt;2 kansen</h3>
+                <div class="pie-card-canvas-wrap"><canvas id="pieChart3plus"></canvas></div>
+            </div>
+        </div>
+
+        <div class="verloop-bottom">
+            <h3>Kansen per aanval</h3>
+            <div class="verloop-bar-wrap"><canvas id="attackBarChart"></canvas></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
+    <script src="verloop.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('service-worker.js').catch(function (err) {
+                    console.warn('Service worker registration failed:', err);
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
