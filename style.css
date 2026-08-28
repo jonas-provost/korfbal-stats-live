@@ -151,7 +151,6 @@ body {
   border: 2px solid var(--background-button);
   border-radius: 10px;
   cursor: pointer;
-  background-color: white;
   display: flex;
   align-items: center;
   font-size: clamp(0.8rem, 1.7vmin, 1.05rem);
@@ -424,10 +423,8 @@ body {
 }
 
 .verloop-link {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: clamp(0.75rem, 1.6vmin, 1.05rem);
-  font-weight: 700;
+  font-size: 1.4rem;
+  padding: 0.5em 1.2em;
 }
 
 .verloop-body {
