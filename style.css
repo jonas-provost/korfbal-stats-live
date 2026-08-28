@@ -3,6 +3,10 @@
   --background-button: #5a5a5a;
 }
 
+html {
+  font-size: clamp(12px, 2.1vmin, 18px);
+}
+
 body {
   display: flex;
   font-family: "Lato", sans-serif;
@@ -45,14 +49,14 @@ body {
 }
 
 .players-container li {
-  margin: 4px 0;
-  padding: 9px 12px;
+  margin: clamp(2px, 0.6vmin, 6px) 0;
+  padding: clamp(5px, 1.3vmin, 11px) clamp(8px, 1.6vmin, 14px);
   border: 2px solid var(--background-button);
   border-radius: 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-size: 1em;
+  font-size: clamp(0.8rem, 1.7vmin, 1.05rem);
   font-weight: 700;
   transition: all 0.15s;
   width: 100%;
@@ -77,14 +81,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 24px;
-  height: 24px;
-  padding: 0 5px;
-  margin-right: 9px;
+  min-width: clamp(18px, 2.6vmin, 26px);
+  height: clamp(18px, 2.6vmin, 26px);
+  padding: 0 clamp(3px, 0.6vmin, 6px);
+  margin-right: clamp(5px, 1vmin, 10px);
   border-radius: 5px;
   background-color: var(--background-button);
   color: white;
-  font-size: 0.8em;
+  font-size: clamp(0.65rem, 1.4vmin, 0.85rem);
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -102,12 +106,27 @@ body {
   border-radius: 12px;
   background-color: #eee;
   color: #555;
-  font-size: 0.8em;
+  font-size: clamp(0.65rem, 1.4vmin, 0.85rem);
   cursor: default;
 }
 
+.sub-log-list {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0;
+  max-height: 16vh;
+  overflow-y: auto;
+  font-size: clamp(0.65rem, 1.4vmin, 0.85rem);
+  color: #555;
+  font-family: "Share Tech Mono", monospace;
+}
+
+.sub-log-list li {
+  padding: 2px 0;
+}
+
 .bench-hint {
-  font-size: 0.75em;
+  font-size: clamp(0.6rem, 1.3vmin, 0.75rem);
   color: #777;
   text-align: center;
   margin: 4px 0 8px;
@@ -127,15 +146,15 @@ body {
 }
 
 .bench-list li {
-  margin: 4px 0;
-  padding: 9px 12px;
+  margin: clamp(2px, 0.6vmin, 6px) 0;
+  padding: clamp(5px, 1.3vmin, 11px) clamp(8px, 1.6vmin, 14px);
   border: 2px solid var(--background-button);
   border-radius: 10px;
   cursor: pointer;
   background-color: white;
   display: flex;
   align-items: center;
-  font-size: 1em;
+  font-size: clamp(0.8rem, 1.7vmin, 1.05rem);
   font-weight: 700;
   transition: all 0.15s;
   width: 100%;
@@ -176,10 +195,13 @@ body {
 }
 
 .switch {
+  --switch-w: clamp(56px, 8vmin, 90px);
+  --switch-h: clamp(32px, 4.6vmin, 50px);
+  --switch-knob: calc(var(--switch-h) - 8px);
   position: relative;
   display: inline-block;
-  width: 90px;
-  height: 50px;
+  width: var(--switch-w);
+  height: var(--switch-h);
 }
 
 .switch input {
@@ -204,8 +226,8 @@ body {
 .slider:before {
   position: absolute;
   content: "";
-  height: 42px;
-  width: 42px;
+  height: var(--switch-knob);
+  width: var(--switch-knob);
   left: 4px;
   bottom: 4px;
   background-color: white;
@@ -223,20 +245,20 @@ body {
 .buttons-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  gap: clamp(4px, 1vmin, 10px);
   width: 92%;
   max-width: 600px;
-  margin-top: 1rem;
+  margin-top: clamp(6px, 1.5vmin, 16px);
 }
 
 .action-button {
-  min-height: 52px;
+  min-height: clamp(34px, 6.5vmin, 60px);
   border: 3px solid var(--background-button);
   border-radius: 12px;
   transition: all 0.15s;
   cursor: pointer;
   background: white;
-  font-size: 1em;
+  font-size: clamp(0.7rem, 1.6vmin, 1rem);
   font-weight: 700;
   margin: 0;
 }
@@ -258,12 +280,12 @@ body {
   display: block;
   width: 92%;
   max-width: 600px;
-  margin: 8px auto 0;
+  margin: clamp(4px, 1vmin, 10px) auto 0;
   border: none;
   outline: none;
   background-color: var(--background-button);
-  padding: 10px 20px;
-  font-size: 1em;
+  padding: clamp(6px, 1.3vmin, 12px) 20px;
+  font-size: clamp(0.75rem, 1.6vmin, 1rem);
   font-weight: 700;
   color: #fff;
   border-radius: 10px;
@@ -287,9 +309,9 @@ body {
 }
 
 .switch input:checked + .slider:before {
-  -webkit-transform: translateX(40px);
-  -ms-transform: translateX(40px);
-  transform: translateX(40px);
+  -webkit-transform: translateX(calc(var(--switch-w) - var(--switch-knob) - 8px));
+  -ms-transform: translateX(calc(var(--switch-w) - var(--switch-knob) - 8px));
+  transform: translateX(calc(var(--switch-w) - var(--switch-knob) - 8px));
 }
 
 .dashboard {
@@ -306,28 +328,30 @@ body {
 
 .canvas-wrapper {
   position: relative;
-  width: 630px;
-  height: 548px;
+  width: min(100%, 90vmin);
+  max-width: 630px;
+  aspect-ratio: 630 / 548;
 }
 
 .field-image {
   position: absolute;
   top: 0;
   left: 0;
-  width: 630px;
-  height: 548px;
+  width: 100%;
+  height: 100%;
   border: 1px solid var(--background-button);
   display: block;
   user-select: none;
   -webkit-user-drag: none;
+  box-sizing: border-box;
 }
 
 .shot-canvas {
   position: absolute;
   top: 0;
   left: 0;
-  width: 630px;
-  height: 548px;
+  width: 100%;
+  height: 100%;
   cursor: crosshair;
 }
 
@@ -339,15 +363,15 @@ body {
 
 .timer-section {
   text-align: center;
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
+  margin-top: clamp(6px, 1.5vmin, 14px);
+  padding-top: clamp(6px, 1.5vmin, 14px);
   border-top: 1px solid #ddd;
 }
 
 .kans-section {
   text-align: center;
-  margin-top: auto;
-  padding-top: 1.25rem;
+  margin-top: clamp(6px, 1.5vmin, 14px);
+  padding-top: clamp(6px, 1.5vmin, 14px);
   border-top: 1px solid #ddd;
   width: 100%;
 }
@@ -360,12 +384,12 @@ body {
 .kans-button {
   flex: 1;
   width: 100%;
-  min-height: 48px;
+  min-height: clamp(32px, 6vmin, 48px);
   border: none;
   border-radius: 10px;
   background-color: var(--background-button);
   color: white;
-  font-size: 1.05em;
+  font-size: clamp(0.75rem, 1.7vmin, 1.05rem);
   font-weight: 700;
   letter-spacing: 0.03em;
   cursor: pointer;
@@ -393,7 +417,7 @@ body {
 
 .opponent-chance-total {
   margin-top: 10px;
-  font-size: 0.95em;
+  font-size: clamp(0.7rem, 1.5vmin, 0.95rem);
   font-weight: 700;
   color: #555;
 }
@@ -401,7 +425,7 @@ body {
 .verloop-link {
   display: inline-block;
   margin-top: 10px;
-  font-size: 1.05em;
+  font-size: clamp(0.75rem, 1.6vmin, 1.05rem);
   font-weight: 700;
 }
 
@@ -536,7 +560,7 @@ body {
 }
 
 .timer {
-  font-size: 2em;
+  font-size: clamp(1.1rem, 3.2vmin, 2rem);
   font-weight: bold;
   font-family: "Share Tech Mono", monospace;
   color: var(--background-button);
@@ -546,22 +570,22 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: clamp(6px, 1.5vmin, 12px);
 }
 
 #timerContainer {
-  min-width: 90px;
+  min-width: clamp(60px, 10vmin, 90px);
 }
 
 .clock-button {
-  width: 44px;
-  height: 44px;
+  width: clamp(30px, 5.5vmin, 44px);
+  height: clamp(30px, 5.5vmin, 44px);
   border-radius: 50%;
   border: none;
   outline: none;
   background-color: var(--background-button);
   color: white;
-  font-size: 16px;
+  font-size: clamp(11px, 2vmin, 16px);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -944,6 +968,10 @@ p {
 
 .pdf-button {
   background-color: #2986cc;
+}
+
+.excel-button {
+  background-color: #1e7145;
 }
 
 .reset-button:hover {

@@ -164,11 +164,13 @@ window.onload = function () {
         }
     }
 
+    const subLogList = document.getElementById("subLogList");
+
     function updateSubLogBadge() {
         subLogBadge.textContent = "Wissels: " + subLog.length + "/" + MAX_SUBS;
-        subLogBadge.title = subLog.length === 0
-            ? "Nog geen wissels"
-            : subLog.map(function (s) { return s.index + " " + s.outNumber + " -> " + s.inNumber; }).join("\n");
+        subLogList.innerHTML = subLog.map(function (s) {
+            return "<li>" + s.index + ". " + s.outNumber + " &rarr; " + s.inNumber + "</li>";
+        }).join("");
     }
 
     renderRosters();
@@ -273,8 +275,10 @@ window.onload = function () {
         if (!selectedPlayer) return;
 
         const rect = shotCanvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        const scaleX = shotCanvas.width / rect.width;
+        const scaleY = shotCanvas.height / rect.height;
+        const x = (event.clientX - rect.left) * scaleX;
+        const y = (event.clientY - rect.top) * scaleY;
 
         ctx.fillStyle = isGoal ? "green" : "red";
         ctx.beginPath();
