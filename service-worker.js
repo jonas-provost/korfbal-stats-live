@@ -41,25 +41,22 @@ self.addEventListener("activate", function (event) {
     );
 });
 
-// Cache-first (fast + works offline), but refreshes the cache in the background when online
+// Network-first: always try to fetch the latest version when online, so updates show up
+// immediately on next open. Only falls back to the cached copy when the network fails (offline).
 self.addEventListener("fetch", function (event) {
     if (event.request.method !== "GET") return;
 
     event.respondWith(
-        caches.match(event.request).then(function (cached) {
-            const networkFetch = fetch(event.request).then(function (response) {
-                if (response && response.status === 200) {
-                    const responseClone = response.clone();
-                    caches.open(CACHE_NAME).then(function (cache) {
-                        cache.put(event.request, responseClone);
-                    });
-                }
-                return response;
-            }).catch(function () {
-                return cached;
-            });
-
-            return cached || networkFetch;
+        fetch(event.request).then(function (response) {
+            if (response && response.status === 200) {
+                const responseClone = response.clone();
+                caches.open(CACHE_NAME).then(function (cache) {
+                    cache.put(event.request, responseClone);
+                });
+            }
+            return response;
+        }).catch(function () {
+            return caches.match(event.request);
         })
     );
 });
