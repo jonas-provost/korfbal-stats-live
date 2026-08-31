@@ -164,13 +164,8 @@ window.onload = function () {
         }
     }
 
-    const subLogList = document.getElementById("subLogList");
-
     function updateSubLogBadge() {
         subLogBadge.textContent = "Wissels: " + subLog.length + "/" + MAX_SUBS;
-        subLogList.innerHTML = subLog.map(function (s) {
-            return "<li>" + s.index + ". " + s.outNumber + " &rarr; " + s.inNumber + "</li>";
-        }).join("");
     }
 
     renderRosters();

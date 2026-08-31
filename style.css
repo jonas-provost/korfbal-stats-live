@@ -110,26 +110,11 @@ body {
   cursor: default;
 }
 
-.sub-log-list {
-  list-style: none;
-  padding: 0;
-  margin: 6px 0 0;
-  max-height: 16vh;
-  overflow-y: auto;
-  font-size: clamp(0.65rem, 1.4vmin, 0.85rem);
-  color: #555;
-  font-family: "Share Tech Mono", monospace;
-}
-
-.sub-log-list li {
-  padding: 2px 0;
-}
-
 .bench-hint {
   font-size: clamp(0.6rem, 1.3vmin, 0.75rem);
   color: #777;
   text-align: center;
-  margin: 4px 0 8px;
+  margin: 4px auto 8px;
   max-width: 200px;
 }
 
@@ -323,7 +308,7 @@ body {
   height: 100%;
   box-sizing: border-box;
   overflow: hidden;
-  justify-content: space-between
+  justify-content: space-between;
 }
 
 .canvas-wrapper {

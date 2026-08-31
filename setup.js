@@ -205,13 +205,24 @@ window.onload = function () {
             chip.classList.remove("dragging");
         });
 
-        // Tap-to-cycle fallback for touch devices without drag support:
-        // tap a chip to send it to the next zone in the cycle.
+        // Tap-to-place: tapping a chip in the pool sends it to whichever zone still needs
+        // players (attack first, then defence, then bench). Tapping an already-placed chip
+        // sends it back to the pool. Dragging still works for moving a chip anywhere directly.
         chip.addEventListener("click", function () {
-            const cycle = ["pool", "attack", "defence", "bench"];
             const current = chip.parentElement.dataset.zone;
-            const nextZone = cycle[(cycle.indexOf(current) + 1) % cycle.length];
-            moveChip(chip, nextZone);
+
+            if (current === "pool") {
+                if (zones.attack.children.length < maxes.attack) {
+                    moveChip(chip, "attack");
+                } else if (zones.defence.children.length < maxes.defence) {
+                    moveChip(chip, "defence");
+                } else if (zones.bench.children.length < maxes.bench) {
+                    moveChip(chip, "bench");
+                }
+                // if attack, defence and bench are all full, tapping does nothing - drag instead
+            } else {
+                moveChip(chip, "pool");
+            }
         });
 
         return chip;
