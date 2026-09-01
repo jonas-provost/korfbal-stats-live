@@ -48,15 +48,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
     <script src="verloop.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker.register('service-worker.js').catch(function (err) {
-                    console.warn('Service worker registration failed:', err);
-                });
-            });
-        }
-    </script>
+    <script src="pwa-register.js"></script>
 </body>
 
 </html>

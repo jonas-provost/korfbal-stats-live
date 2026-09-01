@@ -1,4 +1,4 @@
-const CACHE_NAME = "korfbal-tracker-v1";
+const CACHE_NAME = "korfbal-tracker-v2";
 
 const CORE_ASSETS = [
     "index.html",
@@ -9,6 +9,7 @@ const CORE_ASSETS = [
     "stats.js",
     "verloop.html",
     "verloop.js",
+    "pwa-register.js",
     "style.css",
     "KorfbalVeld.png",
     "KorfbalVeldSmall.png",
@@ -22,9 +23,10 @@ self.addEventListener("install", function (event) {
     event.waitUntil(
         caches.open(CACHE_NAME).then(function (cache) {
             return cache.addAll(CORE_ASSETS);
-        }).then(function () {
-            return self.skipWaiting();
         })
+        // No skipWaiting here on purpose: a newly-installed version waits until the
+        // page explicitly asks for it (via the update banner), instead of silently
+        // taking over mid-session.
     );
 });
 
@@ -41,22 +43,33 @@ self.addEventListener("activate", function (event) {
     );
 });
 
-// Network-first: always try to fetch the latest version when online, so updates show up
-// immediately on next open. Only falls back to the cached copy when the network fails (offline).
+// Lets the page tell a waiting service worker to activate now (triggered by the update banner)
+self.addEventListener("message", function (event) {
+    if (event.data && event.data.type === "SKIP_WAITING") {
+        self.skipWaiting();
+    }
+});
+
+// Stale-while-revalidate: instant response from cache (no delay when switching pages),
+// while quietly refreshing the cache in the background for next time.
 self.addEventListener("fetch", function (event) {
     if (event.request.method !== "GET") return;
 
     event.respondWith(
-        fetch(event.request).then(function (response) {
-            if (response && response.status === 200) {
-                const responseClone = response.clone();
-                caches.open(CACHE_NAME).then(function (cache) {
-                    cache.put(event.request, responseClone);
-                });
-            }
-            return response;
-        }).catch(function () {
-            return caches.match(event.request);
+        caches.match(event.request).then(function (cached) {
+            const networkFetch = fetch(event.request).then(function (response) {
+                if (response && response.status === 200) {
+                    const responseClone = response.clone();
+                    caches.open(CACHE_NAME).then(function (cache) {
+                        cache.put(event.request, responseClone);
+                    });
+                }
+                return response;
+            }).catch(function () {
+                return cached;
+            });
+
+            return cached || networkFetch;
         })
     );
 });

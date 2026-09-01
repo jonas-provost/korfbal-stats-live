@@ -53,22 +53,16 @@
 
         <div class="stats-actions">
             <button id="downloadPdfButton" class="reset-button pdf-button">Download PDF</button>
+            <button id="downloadExcelButton" class="reset-button excel-button">Exporteer data (Excel)</button>
             <button id="resetMatchButton" class="reset-button">Nieuwe wedstrijd</button>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="stats.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker.register('service-worker.js').catch(function (err) {
-                    console.warn('Service worker registration failed:', err);
-                });
-            });
-        }
-    </script>
+    <script src="pwa-register.js"></script>
 </body>
 
 </html>

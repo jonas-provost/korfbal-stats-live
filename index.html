@@ -24,7 +24,7 @@
             <h2>Verdediging:</h2>
             <ul id="defenceList" class="player-list"></ul>
 
-            <a href="stats.html" class="stats-link">Stats &rarr;</a>
+            <a href="stats.html" class="stats-link">Stats</a>
             <div class="scorebord">
                 <div class="scorebord-home">
                     <h3>Neerlandia -</h3>
@@ -109,15 +109,7 @@
         // Set the initial state of the goalCheckbox to unchecked
         document.getElementById("goalCheckbox").checked = false;
     </script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker.register('service-worker.js').catch(function (err) {
-                    console.warn('Service worker registration failed:', err);
-                });
-            });
-        }
-    </script>
+    <script src="pwa-register.js"></script>
 </body>
 
 </html>
