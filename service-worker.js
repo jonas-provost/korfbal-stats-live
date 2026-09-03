@@ -1,4 +1,4 @@
-const CACHE_NAME = "korfbal-tracker-v2";
+const CACHE_NAME = "korfbal-tracker-v3";
 
 const CORE_ASSETS = [
     "index.html",
@@ -10,6 +10,7 @@ const CORE_ASSETS = [
     "verloop.html",
     "verloop.js",
     "pwa-register.js",
+    "viewport-fix.js",
     "style.css",
     "KorfbalVeld.png",
     "KorfbalVeldSmall.png",
