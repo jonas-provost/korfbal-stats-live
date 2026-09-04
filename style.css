@@ -34,7 +34,7 @@ body {
 
 .players-container {
   flex: 1;
-  padding: 1rem;
+  padding: 1rem 1rem 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -709,6 +709,8 @@ p {
 .stats-link {
   font-size: 1.4rem;
   padding: 0.5em 1.2em;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
 }
 
 .back-link:before,
