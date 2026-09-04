@@ -1101,3 +1101,14 @@ p {
 .player-chip.dragging {
   opacity: 0.4;
 }
+
+.version-tag {
+  position: fixed;
+  bottom: 4px;
+  right: 8px;
+  font-size: 0.65rem;
+  color: #aaa;
+  z-index: 10000;
+  pointer-events: none;
+  font-family: "Share Tech Mono", monospace;
+}
