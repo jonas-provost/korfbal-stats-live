@@ -34,7 +34,7 @@ body {
 
 .players-container {
   flex: 1;
-  padding: 1rem 1rem 0.5rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
