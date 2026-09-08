@@ -124,6 +124,18 @@ window.onload = function () {
             "Kansen tegenstander: " + opponentChances + " | Doelpunten: " + opponentGoals + "/" + opponentChances + " (" + pct + "%)";
     }
 
+    function updateOwnChanceDisplay() {
+        let totalShots = 0;
+        let totalGoals = 0;
+        Object.keys(playerStats).forEach(function (name) {
+            totalShots += playerStats[name].shots || 0;
+            totalGoals += playerStats[name].goals || 0;
+        });
+        const pct = totalShots > 0 ? Math.round((totalGoals / totalShots) * 100) : 0;
+        document.getElementById("ownChanceTotal").textContent =
+            "Kansen ons team: " + totalShots + " | Doelpunten: " + totalGoals + "/" + totalShots + " (" + pct + "%)";
+    }
+
     // ---- Roster rendering ----
 
     function makePlayerLi(player) {
@@ -452,12 +464,13 @@ window.onload = function () {
     }
 
     function updatePlayerStats() {
+        updateOwnChanceDisplay();
         saveState();
     }
 
     // ---- Match clock: counts DOWN from 25:00, one alert when it hits 0 ----
 
-    const HELFT_DURATION_SECONDS = 25 * 60;
+    const HELFT_DURATION_SECONDS = (match.periodMinutes || 25) * 60;
 
     const startButton = document.getElementById("startButton");
     const pauseButton = document.getElementById("pauseButton");
@@ -527,6 +540,7 @@ window.onload = function () {
     // ---- Kans: logs a chance/attempt for the OPPONENT (any attempt counts, no detail needed) ----
 
     updateOpponentChanceDisplay();
+    updateOwnChanceDisplay();
 
     document.getElementById("kansButton").addEventListener("click", function () {
         opponentChances++;

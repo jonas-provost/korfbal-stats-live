@@ -295,10 +295,12 @@ window.onload = function () {
         const mainRoster = attackChips.map(function (c) { return chipToPlayer(c, "attack"); })
             .concat(defenceChips.map(function (c) { return chipToPlayer(c, "defence"); }));
         const benchRoster = benchChips.map(function (c) { return chipToPlayer(c); });
+        const periodMinutes = parseInt(document.getElementById("periodMinutesSelect").value, 10) || 25;
 
         const state = {
             opponentName: opponentName,
             matchDate: new Date().toISOString(),
+            periodMinutes: periodMinutes,
             mainRoster: mainRoster,
             benchRoster: benchRoster,
             subLog: [],

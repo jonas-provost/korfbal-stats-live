@@ -23,6 +23,13 @@
         <label for="opponentInput" class="setup-label">Tegenstander</label>
         <input type="text" id="opponentInput" class="setup-input" placeholder="Naam tegenstander">
 
+        <label for="periodMinutesSelect" class="setup-label">Speeltijd per helft</label>
+        <select id="periodMinutesSelect" class="setup-input">
+            <option value="30">30 minuten</option>
+            <option value="25" selected>25 minuten</option>
+            <option value="20">20 minuten</option>
+        </select>
+
         <div class="roster-controls">
             <label for="rosterSelect" class="setup-label">Team</label>
             <select id="rosterSelect" class="setup-input"></select>
@@ -58,7 +65,7 @@
         <button id="startMatchButton" class="reset-button">Start wedstrijd</button>
     </div>
 
-    <div class="version-tag">v1.1 &middot; build 2026-09-04.1</div>
+    <div class="version-tag">v1.2 &middot; build 2026-09-05.1</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="setup.js"></script>

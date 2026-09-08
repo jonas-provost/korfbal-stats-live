@@ -7,6 +7,7 @@ window.onload = function () {
 
     renderMeta(state);
     renderScoreboard(state);
+    renderChancesBanner(state);
     renderMainStats(state);
     renderOtherActions();
 
@@ -70,6 +71,26 @@ window.onload = function () {
     function renderScoreboard(state) {
         document.getElementById("statsHomeScore").textContent = state.homeScore || 0;
         document.getElementById("statsAwayScore").textContent = state.awayScore || 0;
+    }
+
+    function renderChancesBanner(state) {
+        let ownShots = 0;
+        let ownGoals = 0;
+        Object.keys(state.playerStats || {}).forEach(function (name) {
+            ownShots += state.playerStats[name].shots || 0;
+            ownGoals += state.playerStats[name].goals || 0;
+        });
+        const ownPct = ownShots > 0 ? Math.round((ownGoals / ownShots) * 100) : 0;
+
+        const oppChances = state.opponentChances || 0;
+        const oppGoals = state.opponentGoals || 0;
+        const oppPct = oppChances > 0 ? Math.round((oppGoals / oppChances) * 100) : 0;
+
+        document.getElementById("ownChancesBanner").textContent = ownShots;
+        document.getElementById("ownGoalsBanner").textContent = ownGoals + "/" + ownShots + " (" + ownPct + "%) doelpunten";
+
+        document.getElementById("opponentChancesBanner").textContent = oppChances;
+        document.getElementById("opponentGoalsBanner").textContent = oppGoals + "/" + oppChances + " (" + oppPct + "%) doelpunten";
     }
 
     // ---- Hoofdstatistieken: Kansen (color-coded rendement), Tegengoals, Rebounds ----
@@ -232,6 +253,29 @@ window.onload = function () {
         doc.text("Neerlandia vs " + opponent + " - " + dateStr, 14, 26);
         doc.text("Eindstand: " + (state.homeScore || 0) + " - " + (state.awayScore || 0), 14, 33);
 
+        // ---- Prominent chances banner ----
+        let ownShots = 0;
+        let ownGoals = 0;
+        players.forEach(function (p) {
+            ownShots += state.playerStats[p].shots || 0;
+            ownGoals += state.playerStats[p].goals || 0;
+        });
+        const ownPct = ownShots > 0 ? Math.round((ownGoals / ownShots) * 100) : 0;
+        const oppChances = state.opponentChances || 0;
+        const oppGoals = state.opponentGoals || 0;
+        const oppPct = oppChances > 0 ? Math.round((oppGoals / oppChances) * 100) : 0;
+
+        doc.setFillColor(240, 240, 240);
+        doc.rect(14, 39, 182, 20, "F");
+        doc.setFontSize(12);
+        doc.setFont(undefined, "bold");
+        doc.setTextColor(90, 90, 90);
+        doc.text("Kansen ons team: " + ownShots + " | Doelpunten: " + ownGoals + "/" + ownShots + " (" + ownPct + "%)", 18, 47);
+        doc.setTextColor(224, 86, 86);
+        doc.text("Kansen tegenstander: " + oppChances + " | Doelpunten: " + oppGoals + "/" + oppChances + " (" + oppPct + "%)", 18, 55);
+        doc.setFont(undefined, "normal");
+        doc.setTextColor(0, 0, 0);
+
         const mainRows = players
             .sort(function (a, b) { return (state.playerStats[b].goals || 0) - (state.playerStats[a].goals || 0); })
             .map(function (player) {
@@ -249,7 +293,7 @@ window.onload = function () {
             });
 
         doc.autoTable({
-            startY: 40,
+            startY: 69,
             head: [["Speler", "Kansen", "Tegengoals", "Rebounds"]],
             body: mainRows
         });

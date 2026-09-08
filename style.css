@@ -34,7 +34,7 @@ body {
 
 .players-container {
   flex: 1;
-  padding: 1rem;
+  padding: 1rem 1rem 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -724,6 +724,55 @@ p {
   justify-content: center;
   gap: 1.5rem;
   margin: 1rem 0 2rem;
+}
+
+.chances-banner {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 0 0 2rem;
+  flex-wrap: wrap;
+}
+
+.chances-banner-item {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 28px;
+  text-align: center;
+  min-width: 200px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-top: 5px solid;
+}
+
+.chances-banner-ons {
+  border-top-color: var(--background-button);
+}
+
+.chances-banner-tegenstander {
+  border-top-color: #e05656;
+}
+
+.chances-banner-label {
+  font-size: 0.9em;
+  font-weight: 700;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 4px;
+}
+
+.chances-banner-value {
+  font-family: "Share Tech Mono", monospace;
+  font-weight: bold;
+  font-size: 2.4em;
+  color: #222;
+  line-height: 1;
+}
+
+.chances-banner-sub {
+  font-size: 0.9em;
+  color: #777;
+  margin-top: 6px;
 }
 
 .stats-score-team {
