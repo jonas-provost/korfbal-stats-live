@@ -189,10 +189,12 @@ window.onload = function () {
 
     function renderOtherActions() {
         const tbody = document.querySelector("#otherActionsTable tbody");
+        const tfoot = document.querySelector("#otherActionsTable tfoot");
         const rows = getOtherActionRows();
 
         if (rows.length === 0) {
             tbody.innerHTML = "<tr><td colspan='6' class='stats-empty'>Nog geen acties geregistreerd.</td></tr>";
+            tfoot.innerHTML = "";
             updateOtherSortIndicators();
             return;
         }
@@ -220,6 +222,33 @@ window.onload = function () {
                 "<td>" + row.steal + "</td>" +
                 "</tr>";
         }).join("");
+
+        // Totals row - stays fixed in tfoot regardless of how the tbody is sorted
+        const totals = rows.reduce(function (acc, row) {
+            acc.vrijworpScored += row.vrijworp.scored;
+            acc.vrijworpTotal += row.vrijworp.total;
+            acc.penaltyScored += row.penalty.scored;
+            acc.penaltyTotal += row.penalty.total;
+            acc.doorloperScored += row.doorloper.scored;
+            acc.doorloperTotal += row.doorloper.total;
+            acc.assist += row.assist;
+            acc.steal += row.steal;
+            return acc;
+        }, {
+            vrijworpScored: 0, vrijworpTotal: 0,
+            penaltyScored: 0, penaltyTotal: 0,
+            doorloperScored: 0, doorloperTotal: 0,
+            assist: 0, steal: 0
+        });
+
+        tfoot.innerHTML = "<tr class='stats-totals-row'>" +
+            "<td>Totaal</td>" +
+            "<td class='fraction'>" + totals.vrijworpScored + "/" + totals.vrijworpTotal + "</td>" +
+            "<td class='fraction'>" + totals.penaltyScored + "/" + totals.penaltyTotal + "</td>" +
+            "<td class='fraction'>" + totals.doorloperScored + "/" + totals.doorloperTotal + "</td>" +
+            "<td>" + totals.assist + "</td>" +
+            "<td>" + totals.steal + "</td>" +
+            "</tr>";
 
         updateOtherSortIndicators();
     }
@@ -314,10 +343,42 @@ window.onload = function () {
             ];
         });
 
+        const otherTotals = players.reduce(function (acc, player) {
+            const stats = state.playerStats[player];
+            const actions = stats.actions || {};
+            const vrijworp = getShotActionData(stats, "Vrijworp");
+            const penalty = getShotActionData(stats, "Penalty");
+            const doorloper = getShotActionData(stats, "Doorloper");
+            acc.vrijworpScored += vrijworp.scored;
+            acc.vrijworpTotal += vrijworp.total;
+            acc.penaltyScored += penalty.scored;
+            acc.penaltyTotal += penalty.total;
+            acc.doorloperScored += doorloper.scored;
+            acc.doorloperTotal += doorloper.total;
+            acc.assist += actions["Assist"] || 0;
+            acc.steal += actions["Steal"] || 0;
+            return acc;
+        }, { vrijworpScored: 0, vrijworpTotal: 0, penaltyScored: 0, penaltyTotal: 0, doorloperScored: 0, doorloperTotal: 0, assist: 0, steal: 0 });
+
+        otherRows.push([
+            "Totaal",
+            otherTotals.vrijworpScored + "/" + otherTotals.vrijworpTotal,
+            otherTotals.penaltyScored + "/" + otherTotals.penaltyTotal,
+            otherTotals.doorloperScored + "/" + otherTotals.doorloperTotal,
+            otherTotals.assist,
+            otherTotals.steal
+        ]);
+
         doc.autoTable({
             startY: doc.lastAutoTable.finalY + 10,
             head: [["Speler", "Vrijworp", "Penalty", "Doorloper", "Assist", "Steal"]],
-            body: otherRows
+            body: otherRows,
+            didParseCell: function (data) {
+                if (data.row.index === otherRows.length - 1 && data.section === "body") {
+                    data.cell.styles.fontStyle = "bold";
+                    data.cell.styles.fillColor = [236, 236, 236];
+                }
+            }
         });
 
         if (Array.isArray(state.subLog) && state.subLog.length > 0) {
@@ -464,6 +525,35 @@ window.onload = function () {
                 actions["Rebound"] || 0, actions["Assist"] || 0, actions["Steal"] || 0, actions["Tegengoal"] || 0
             ]);
         });
+
+        const teamTotals = players.reduce(function (acc, name) {
+            const stats = state.playerStats[name];
+            const actions = stats.actions || {};
+            const vrijworp = shotData(stats, "Vrijworp");
+            const penalty = shotData(stats, "Penalty");
+            const doorloper = shotData(stats, "Doorloper");
+            acc.shots += stats.shots || 0;
+            acc.goals += stats.goals || 0;
+            acc.vrijworpScored += vrijworp.scored;
+            acc.vrijworpTotal += vrijworp.total;
+            acc.penaltyScored += penalty.scored;
+            acc.penaltyTotal += penalty.total;
+            acc.doorloperScored += doorloper.scored;
+            acc.doorloperTotal += doorloper.total;
+            acc.rebounds += actions["Rebound"] || 0;
+            acc.assists += actions["Assist"] || 0;
+            acc.steals += actions["Steal"] || 0;
+            acc.tegengoals += actions["Tegengoal"] || 0;
+            return acc;
+        }, { shots: 0, goals: 0, vrijworpScored: 0, vrijworpTotal: 0, penaltyScored: 0, penaltyTotal: 0, doorloperScored: 0, doorloperTotal: 0, rebounds: 0, assists: 0, steals: 0, tegengoals: 0 });
+        const teamPct = teamTotals.shots > 0 ? Math.round((teamTotals.goals / teamTotals.shots) * 100) : 0;
+        playerStatsRows.push([
+            "Totaal", "", teamTotals.shots, teamTotals.goals, teamPct,
+            teamTotals.vrijworpScored, teamTotals.vrijworpTotal,
+            teamTotals.penaltyScored, teamTotals.penaltyTotal,
+            teamTotals.doorloperScored, teamTotals.doorloperTotal,
+            teamTotals.rebounds, teamTotals.assists, teamTotals.steals, teamTotals.tegengoals
+        ]);
 
         // ---- ShotLocations (for the shotmap visual - canvas was 630 x 548 px, origin top-left) ----
         const shotRows = [["Speler", "Nummer", "X", "Y", "Doelpunt"]];

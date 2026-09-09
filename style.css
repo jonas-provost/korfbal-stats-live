@@ -975,6 +975,16 @@ p {
   background: #f0f0f0;
 }
 
+.stats-totals-row {
+  font-weight: 700;
+  background: #ececec !important;
+  border-top: 2px solid #ccc;
+}
+
+.stats-totals-row td {
+  color: #222;
+}
+
 .stats-table td {
   font-size: 0.95em;
 }
