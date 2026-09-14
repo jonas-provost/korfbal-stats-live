@@ -53,4 +53,4 @@ verloop.html → grafisch wedstrijdverloop
 
 ## 📌 Versie
 
-Huidige versie staat rechtsonder in de app zelf (bv. `v1.3 · build 2026-09-05.2`) — handig om te checken of een update goed is doorgekomen na een deploy.
+Huidige versie staat rechtsonder in de app zelf (bv. `v1.4 · build 2026-09-09.2`) — handig om te checken of een update goed is doorgekomen na een deploy.
