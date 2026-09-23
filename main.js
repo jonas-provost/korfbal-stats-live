@@ -61,6 +61,7 @@ window.onload = function () {
         const state = {
             opponentName: match.opponentName,
             matchDate: match.matchDate,
+			periodMinutes: match.periodMinutes,
             mainRoster,
             benchRoster,
             subLog,
@@ -470,7 +471,7 @@ window.onload = function () {
 
     // ---- Match clock: counts DOWN from 25:00, one alert when it hits 0 ----
 
-    const HELFT_DURATION_SECONDS = (match.periodMinutes || 25) * 60;
+    const HELFT_DURATION_SECONDS = (match.periodMinutes || 30) * 60;
 
     const startButton = document.getElementById("startButton");
     const pauseButton = document.getElementById("pauseButton");
