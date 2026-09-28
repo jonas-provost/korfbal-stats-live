@@ -62,10 +62,33 @@
             </div>
         </div>
 
-        <button id="startMatchButton" class="reset-button">Start wedstrijd</button>
+        <div class="setup-actions">
+            <button id="startMatchButton" class="reset-button setup-action-button" type="button">Start wedstrijd</button>
+            <button id="addPlayerButton" class="reset-button pdf-button setup-action-button" type="button">Voeg speler toe</button>
+        </div>
     </div>
 
-    <div class="version-tag">v1.6 &middot; build 2026-09-28</div>
+    <dialog id="addPlayerDialog" class="add-player-dialog">
+        <form id="addPlayerForm" novalidate>
+            <h3>Speler toevoegen</h3>
+            <p class="add-player-hint">Alleen voor deze wedstrijd, het team zelf verandert niet.</p>
+
+            <label for="newPlayerNumber" class="setup-label">Nummer</label>
+            <input type="number" id="newPlayerNumber" class="setup-input" min="0" max="999" inputmode="numeric">
+
+            <label for="newPlayerName" class="setup-label">Naam</label>
+            <input type="text" id="newPlayerName" class="setup-input" maxlength="30" autocomplete="off">
+
+            <p id="addPlayerError" class="add-player-error" role="alert"></p>
+
+            <div class="add-player-buttons">
+                <button type="button" id="cancelAddPlayerButton" class="reset-button">Annuleren</button>
+                <button type="submit" class="reset-button pdf-button">Toevoegen</button>
+            </div>
+        </form>
+    </dialog>
+
+    <div class="version-tag">v1.7 &middot; build 2026-09-28</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="setup.js"></script>

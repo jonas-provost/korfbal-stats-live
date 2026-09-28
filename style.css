@@ -1163,6 +1163,61 @@ p {
   opacity: 0.4;
 }
 
+.setup-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.setup-action-button {
+  width: 100%;
+  min-height: 64px;
+  font-size: 1em;
+}
+
+.add-player-dialog {
+  border: none;
+  border-radius: 10px;
+  padding: 20px 24px;
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.add-player-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.add-player-dialog h3 {
+  margin: 0 0 4px;
+  padding: 0;
+}
+
+.add-player-dialog .setup-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.add-player-hint {
+  font-size: 0.8em;
+  color: #777;
+  margin: 0 0 14px;
+}
+
+.add-player-error {
+  min-height: 1.2em;
+  margin: 0 0 8px;
+  font-size: 0.85em;
+  color: #c0392b;
+}
+
+.add-player-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
 .version-tag {
   position: fixed;
   bottom: 4px;

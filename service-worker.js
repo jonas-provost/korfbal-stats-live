@@ -1,4 +1,4 @@
-const CACHE_NAME = "korfbal-tracker-v5";
+const CACHE_NAME = "korfbal-tracker-v6";
 
 const CORE_ASSETS = [
     "index.html",

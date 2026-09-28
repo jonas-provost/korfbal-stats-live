@@ -20,6 +20,7 @@ Een installeerbare Progressive Web App (PWA) die courtside draait op elk toestel
 - 📈 **Verloop** — grafische weergave van balbezit en kansen per aanval doorheen de wedstrijd
 - 🧾 **Export** — volledig wedstrijdrapport als PDF (incl. schotkaart per speler) of Excel
 - 👥 **Meerdere teams** — importeer elk elftal via een Excel-bestand, wissel via een dropdown
+- ➕ **Invaller toevoegen** — voeg in de setup snel een extra speler (nummer + naam) toe, enkel voor die wedstrijd
 - 📱 **Installeerbaar** — werkt als volwaardige app op laptop én tablet, ook offline
 
 ## 🖥️ Gebruiken
@@ -53,4 +54,4 @@ verloop.html → grafisch wedstrijdverloop
 
 ## 📌 Versie
 
-Huidige versie staat rechtsonder in de app zelf (bv. `v1.6 · build 2026-09-28`) — handig om te checken of een update goed is doorgekomen na een deploy.
+Huidige versie staat rechtsonder in de app zelf (bv. `v1.7 · build 2026-09-28`) — handig om te checken of een update goed is doorgekomen na een deploy.

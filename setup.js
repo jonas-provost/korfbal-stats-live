@@ -276,6 +276,65 @@ window.onload = function () {
     }
     updateCounts();
 
+    // ---- Add a one-off player (only for this match, the saved team is not changed) ----
+
+    const addPlayerDialog = document.getElementById("addPlayerDialog");
+    const addPlayerForm = document.getElementById("addPlayerForm");
+    const newPlayerNumber = document.getElementById("newPlayerNumber");
+    const newPlayerName = document.getElementById("newPlayerName");
+    const addPlayerError = document.getElementById("addPlayerError");
+
+    function currentChips() {
+        return Array.from(document.querySelectorAll(".player-chip"));
+    }
+
+    function nextFreeNumber() {
+        const numbers = currentChips().map(function (c) { return parseInt(c.dataset.number, 10); });
+        return numbers.length ? Math.max.apply(null, numbers) + 1 : 1;
+    }
+
+    document.getElementById("addPlayerButton").addEventListener("click", function () {
+        newPlayerNumber.value = nextFreeNumber();
+        newPlayerName.value = "";
+        addPlayerError.textContent = "";
+        addPlayerDialog.showModal();
+        newPlayerName.focus();
+    });
+
+    document.getElementById("cancelAddPlayerButton").addEventListener("click", function () {
+        addPlayerDialog.close();
+    });
+
+    addPlayerForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const number = parseInt(newPlayerNumber.value, 10);
+        const name = newPlayerName.value.trim();
+
+        if (isNaN(number) || number < 0) {
+            addPlayerError.textContent = "Vul een geldig nummer in.";
+            return;
+        }
+        if (!name) {
+            addPlayerError.textContent = "Vul een naam in.";
+            return;
+        }
+
+        // Numbers identify chips while dragging, and stats are stored per name - both must be unique
+        const chips = currentChips();
+        if (chips.some(function (c) { return parseInt(c.dataset.number, 10) === number; })) {
+            addPlayerError.textContent = "Nummer " + number + " is al in gebruik.";
+            return;
+        }
+        if (chips.some(function (c) { return c.dataset.name.toLowerCase() === name.toLowerCase(); })) {
+            addPlayerError.textContent = "Er is al een speler met de naam \"" + name + "\".";
+            return;
+        }
+
+        zones.pool.appendChild(makeChip({ number: number, name: name }));
+        addPlayerDialog.close();
+    });
+
     document.getElementById("startMatchButton").addEventListener("click", function () {
         const opponentName = document.getElementById("opponentInput").value.trim() || "uitploeg";
 
