@@ -1,4 +1,4 @@
-const CACHE_NAME = "korfbal-tracker-v4";
+const CACHE_NAME = "korfbal-tracker-v5";
 
 const CORE_ASSETS = [
     "index.html",
@@ -19,10 +19,26 @@ const CORE_ASSETS = [
     "manifest.json"
 ];
 
+// Third-party libraries. Fetched with CORS so they can really be cached (a plain <script>
+// request comes back "opaque" and would be skipped), which makes stats, PDF, Excel import
+// and the verloop charts work offline. Failures here must never block the install.
+const EXTERNAL_ASSETS = [
+    "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"
+];
+
 self.addEventListener("install", function (event) {
     event.waitUntil(
         caches.open(CACHE_NAME).then(function (cache) {
-            return cache.addAll(CORE_ASSETS);
+            return cache.addAll(CORE_ASSETS).then(function () {
+                return Promise.all(EXTERNAL_ASSETS.map(function (url) {
+                    return fetch(url, { mode: "cors" }).then(function (response) {
+                        if (response && response.ok) return cache.put(url, response);
+                    }).catch(function () { /* offline during install: cached later on first online visit */ });
+                }));
+            });
         })
         // No skipWaiting here on purpose: a newly-installed version waits until the
         // page explicitly asks for it (via the update banner), instead of silently
@@ -66,7 +82,7 @@ self.addEventListener("fetch", function (event) {
                 }
                 return response;
             }).catch(function () {
-                return cached;
+                return cached || Response.error();
             });
 
             return cached || networkFetch;

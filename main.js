@@ -61,7 +61,7 @@ window.onload = function () {
         const state = {
             opponentName: match.opponentName,
             matchDate: match.matchDate,
-			periodMinutes: match.periodMinutes,
+            periodMinutes: match.periodMinutes,
             mainRoster,
             benchRoster,
             subLog,
@@ -142,8 +142,16 @@ window.onload = function () {
     function makePlayerLi(player) {
         const li = document.createElement("li");
         li.dataset.number = player.number;
-        li.innerHTML = "<span class='player-number'>" + player.number + "</span>" +
-            "<span class='player-name-text'>" + player.name + "</span>";
+
+        const numberSpan = document.createElement("span");
+        numberSpan.className = "player-number";
+        numberSpan.textContent = player.number;
+
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "player-name-text";
+        nameSpan.textContent = player.name;
+
+        li.append(numberSpan, nameSpan);
         return li;
     }
 
@@ -469,13 +477,25 @@ window.onload = function () {
         saveState();
     }
 
-    // ---- Match clock: counts DOWN from 25:00, one alert when it hits 0 ----
+    // ---- Match clock: counts DOWN from the period length chosen in setup, one alert when it hits 0 ----
 
-    const HELFT_DURATION_SECONDS = (match.periodMinutes || 30) * 60;
+    const ALLOWED_PERIOD_MINUTES = [20, 25, 30];
+    const DEFAULT_PERIOD_MINUTES = 25; // same default as the dropdown in setup.html
+    const chosenMinutes = parseInt(match.periodMinutes, 10);
+    const PERIOD_MINUTES = ALLOWED_PERIOD_MINUTES.includes(chosenMinutes) ? chosenMinutes : DEFAULT_PERIOD_MINUTES;
+    const HELFT_DURATION_SECONDS = PERIOD_MINUTES * 60;
+
+    function formatClock(totalSeconds) {
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+    }
 
     const startButton = document.getElementById("startButton");
     const pauseButton = document.getElementById("pauseButton");
     const timerElement = document.getElementById("timer");
+    const resetClockButton = document.getElementById("resetClockButton");
+    resetClockButton.setAttribute("aria-label", "Reset naar " + formatClock(HELFT_DURATION_SECONDS));
 
     let timeUpAlertShown = false;
 
@@ -492,9 +512,7 @@ window.onload = function () {
 
     function updateTimerDisplay() {
         const totalSeconds = Math.ceil(getRemainingSeconds());
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        timerElement.textContent = formatClock(totalSeconds);
 
         if (totalSeconds <= 0 && timerRunning && !timeUpAlertShown) {
             timeUpAlertShown = true;
@@ -525,7 +543,7 @@ window.onload = function () {
     startButton.addEventListener("click", startTimer);
     pauseButton.addEventListener("click", pauseTimer);
 
-    document.getElementById("resetClockButton").addEventListener("click", function () {
+    resetClockButton.addEventListener("click", function () {
         pauseTimer();
         timerElapsedSeconds = 0;
         timeUpAlertShown = false;

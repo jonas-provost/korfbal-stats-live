@@ -1,5 +1,15 @@
 window.onload = function () {
     const STORAGE_KEY = "korfbalMatchState";
+
+    // Player names come from imported files, so never put them into innerHTML unescaped
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
     const state = loadState();
 
     const SHOT_COLUMNS = ["vrijworp", "penalty", "doorloper"];
@@ -158,7 +168,7 @@ window.onload = function () {
             card.className = "stats-card";
             card.innerHTML =
                 "<div class='stats-card-header'>" +
-                    "<span class='stats-card-name'>" + player + "</span>" +
+                    "<span class='stats-card-name'>" + escapeHtml(player) + "</span>" +
                 "</div>" +
                 metricRowHtml("Kansen", stats.goals || 0, stats.shots || 0) +
                 "<div class='stats-count-list'>" +
@@ -214,7 +224,7 @@ window.onload = function () {
 
         tbody.innerHTML = rows.map(function (row) {
             return "<tr>" +
-                "<td>" + row.player + "</td>" +
+                "<td>" + escapeHtml(row.player) + "</td>" +
                 "<td class='fraction'>" + row.vrijworp.scored + "/" + row.vrijworp.total + "</td>" +
                 "<td class='fraction'>" + row.penalty.scored + "/" + row.penalty.total + "</td>" +
                 "<td class='fraction'>" + row.doorloper.scored + "/" + row.doorloper.total + "</td>" +

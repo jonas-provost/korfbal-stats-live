@@ -46,9 +46,13 @@ window.onload = function () {
     const rosterSelect = document.getElementById("rosterSelect");
 
     function renderRosterOptions(selectName) {
-        rosterSelect.innerHTML = Object.keys(rosters).map(function (name) {
-            return "<option value=\"" + name + "\">" + name + "</option>";
-        }).join("");
+        rosterSelect.replaceChildren();
+        Object.keys(rosters).forEach(function (name) {
+            const option = document.createElement("option");
+            option.value = name;
+            option.textContent = name;
+            rosterSelect.appendChild(option);
+        });
         if (selectName && rosters[selectName]) {
             rosterSelect.value = selectName;
         }
@@ -195,7 +199,11 @@ window.onload = function () {
         chip.draggable = true;
         chip.dataset.number = player.number;
         chip.dataset.name = player.name;
-        chip.innerHTML = "<span class='player-number'>" + player.number + "</span>" + player.name;
+
+        const numberSpan = document.createElement("span");
+        numberSpan.className = "player-number";
+        numberSpan.textContent = player.number;
+        chip.append(numberSpan, document.createTextNode(player.name));
 
         chip.addEventListener("dragstart", function (event) {
             event.dataTransfer.setData("text/plain", String(player.number));
