@@ -81,14 +81,22 @@
 
             <p id="addPlayerError" class="add-player-error" role="alert"></p>
 
-            <div class="add-player-buttons">
+            <div id="addPlayerButtons" class="add-player-buttons">
                 <button type="button" id="cancelAddPlayerButton" class="reset-button">Annuleren</button>
                 <button type="submit" class="reset-button pdf-button">Toevoegen</button>
+            </div>
+
+            <div id="overwriteConfirm" class="add-player-confirm" hidden>
+                <p id="overwriteText"></p>
+                <div class="add-player-buttons">
+                    <button type="button" id="overwriteNoButton" class="reset-button">Nee</button>
+                    <button type="button" id="overwriteYesButton" class="reset-button pdf-button">Ja</button>
+                </div>
             </div>
         </form>
     </dialog>
 
-    <div class="version-tag">v1.7 &middot; build 2026-09-28</div>
+    <div class="version-tag">v1.8 &middot; build 2026-10-12</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="setup.js"></script>

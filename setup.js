@@ -283,6 +283,9 @@ window.onload = function () {
     const newPlayerNumber = document.getElementById("newPlayerNumber");
     const newPlayerName = document.getElementById("newPlayerName");
     const addPlayerError = document.getElementById("addPlayerError");
+    const addPlayerButtons = document.getElementById("addPlayerButtons");
+    const overwriteConfirm = document.getElementById("overwriteConfirm");
+    const overwriteText = document.getElementById("overwriteText");
 
     function currentChips() {
         return Array.from(document.querySelectorAll(".player-chip"));
@@ -297,6 +300,7 @@ window.onload = function () {
         newPlayerNumber.value = nextFreeNumber();
         newPlayerName.value = "";
         addPlayerError.textContent = "";
+        hideOverwriteConfirm();
         addPlayerDialog.showModal();
         newPlayerName.focus();
     });
@@ -304,6 +308,28 @@ window.onload = function () {
     document.getElementById("cancelAddPlayerButton").addEventListener("click", function () {
         addPlayerDialog.close();
     });
+
+    // Chip that would be replaced when the user confirms "overwrite" (null = no confirmation pending)
+    let chipToReplace = null;
+
+    function hideOverwriteConfirm() {
+        chipToReplace = null;
+        overwriteConfirm.hidden = true;
+        addPlayerButtons.hidden = false;
+    }
+
+    function addNewChip(number, name) {
+        const chip = makeChip({ number: number, name: name });
+        if (chipToReplace) {
+            // Same spot as the player it replaces (Aanval, Verdediging, Bank or Spelers)
+            chipToReplace.parentElement.replaceChild(chip, chipToReplace);
+        } else {
+            zones.pool.appendChild(chip);
+        }
+        updateCounts();
+        hideOverwriteConfirm();
+        addPlayerDialog.close();
+    }
 
     addPlayerForm.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -320,20 +346,41 @@ window.onload = function () {
             return;
         }
 
-        // Numbers identify chips while dragging, and stats are stored per name - both must be unique
         const chips = currentChips();
-        if (chips.some(function (c) { return parseInt(c.dataset.number, 10) === number; })) {
-            addPlayerError.textContent = "Nummer " + number + " is al in gebruik.";
-            return;
-        }
-        if (chips.some(function (c) { return c.dataset.name.toLowerCase() === name.toLowerCase(); })) {
+        const sameNumber = chips.find(function (c) { return parseInt(c.dataset.number, 10) === number; }) || null;
+
+        // Stats are stored per name, so a name can only exist once. The player that is being
+        // replaced does not count (e.g. replacing "Klara" #1 by a new "Klara" #1 is fine).
+        const nameTaken = chips.some(function (c) {
+            return c !== sameNumber && c.dataset.name.toLowerCase() === name.toLowerCase();
+        });
+        if (nameTaken) {
             addPlayerError.textContent = "Er is al een speler met de naam \"" + name + "\".";
             return;
         }
 
-        zones.pool.appendChild(makeChip({ number: number, name: name }));
-        addPlayerDialog.close();
+        addPlayerError.textContent = "";
+
+        if (sameNumber) {
+            // Number already in use: ask instead of blocking
+            chipToReplace = sameNumber;
+            overwriteText.textContent = "Nummer " + number + " is al van " + sameNumber.dataset.name +
+                ". Overschrijven met " + name + "?";
+            addPlayerButtons.hidden = true;
+            overwriteConfirm.hidden = false;
+            return;
+        }
+
+        addNewChip(number, name);
     });
+
+    document.getElementById("overwriteYesButton").addEventListener("click", function () {
+        addNewChip(parseInt(newPlayerNumber.value, 10), newPlayerName.value.trim());
+    });
+
+    document.getElementById("overwriteNoButton").addEventListener("click", hideOverwriteConfirm);
+
+    addPlayerDialog.addEventListener("close", hideOverwriteConfirm);
 
     document.getElementById("startMatchButton").addEventListener("click", function () {
         const opponentName = document.getElementById("opponentInput").value.trim() || "uitploeg";

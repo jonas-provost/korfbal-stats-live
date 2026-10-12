@@ -1212,6 +1212,16 @@ p {
   color: #c0392b;
 }
 
+.add-player-dialog [hidden] {
+  display: none !important;
+}
+
+.add-player-confirm p {
+  margin: 0 0 12px;
+  font-weight: 700;
+  color: #333;
+}
+
 .add-player-buttons {
   display: flex;
   justify-content: center;
